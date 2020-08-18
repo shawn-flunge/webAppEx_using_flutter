@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:splashscreen/splashscreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,16 +14,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue, 
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home:Splash(),
-      //home: OnBoardingPage(),
-      //home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return MaterialApp(home:Splash());// return MaterialApp(
+    //   title: 'Flutter Demo',
+    //   theme: ThemeData(
+    //     primarySwatch: Colors.blue, 
+    //     visualDensity: VisualDensity.adaptivePlatformDensity,
+    //   ),
+    //   home:loadingScreen(),  //Splash()
+    //   //home: OnBoardingPage(),
+    //   //home: MyHomePage(title: 'Flutter Demo Home Page'),
+    // );
   }
 }
 
@@ -64,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 
-/////introduction_screen, ~161
+/////start of introduction_screen, ~166
 class OnBoardingPage extends StatefulWidget {
   @override
   _OnBoardingPageState createState() => _OnBoardingPageState();
@@ -101,23 +102,24 @@ class _OnBoardingPageState extends State<OnBoardingPage>{
       key:introKey,
       pages: [
         PageViewModel(
-          title: "PageView 1",
-          body : " PageView 1 body ",
+          title: "안내,소개 페이지 1",
+          //image: _buildImage('img name'),
+          body : "body ",
           decoration:pageDecoration,
         ),
         PageViewModel(
-          title: "PageView 2",
-          body : " PageView 2 body ",
+          title: "안내,소개 페이지 2",
+          body : "body ",
           decoration:pageDecoration,
         ),
         PageViewModel(
-          title: "PageView 3",
-          body : " PageView 3 body ",
+          title: "안내,소개 페이지 3",
+          body : "body ",
           decoration:pageDecoration,
         ),
         PageViewModel(
-          title: "PageView oo",
-          body : "PageView oo Body",
+          title: "안내,소개 페이지 4",
+          body : "Body",
           footer: RaisedButton(
             onPressed: (){
               introKey.currentState?.animateScroll(0);
@@ -134,7 +136,7 @@ class _OnBoardingPageState extends State<OnBoardingPage>{
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title:"PageView Last",
+          title:"안내,소개 페이지 Last",
           bodyWidget: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const[
@@ -164,13 +166,15 @@ class _OnBoardingPageState extends State<OnBoardingPage>{
   }
 }
 
+//end of introduction
+
+//start of Splash that check first launch
 class Splash extends StatefulWidget{
   @override
   SplashState createState() => SplashState();
 }
 
 class SplashState extends State<Splash>{
-
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false );
@@ -186,23 +190,91 @@ class SplashState extends State<Splash>{
       );      
     }
   }
-
-  @override
-  void initState(){
-    super.initState();
-    checkFirstSeen();
-    // new Timer(new Duration(milliseconds: 500),(){
-    //   checkFirstSeen();
-    // });
-  }
-
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   //checkFirstSeen();
+  //   new Timer(new Duration(milliseconds: 500),(){
+  //     checkFirstSeen();
+  //   });
+  // }
   @override
   Widget build(BuildContext context){
-    return new Scaffold(
-      body: new Center(
-        child: new Text('Intro,Intro,Intro,Intro,Intro'),
+    
+    return new SplashScreen(
+      seconds: 14,
+      navigateAfterSeconds: checkFirstSeen(),
+      title : new Text('Splash Screen',
+        style: new TextStyle(
+          fontWeight : FontWeight.bold,
+          fontSize:20.0
+        ),
       ),
-    );
+      image: new Image.network('https://flutter.io/images/catalog-widget-placeholder.png'),
+      gradientBackground: new LinearGradient(colors: [Colors.cyan, Colors.blue], begin: Alignment.topLeft, end: Alignment.bottomRight ),
+      backgroundColor: Colors.white,
+      styleTextUnderTheLoader: new TextStyle(),
+      photoSize: 100.0,
+      onClick: ()=>print("Flutter"),
+      loaderColor: Colors.red,
+      );
   }
 
 }
+//end of Splash
+
+class CheckFirst extends StatefulWidget{
+  @override
+  CheckFirstState createState() => CheckFirstState();
+}
+
+class CheckFirstState extends State<CheckFirst>{
+
+}
+
+
+//start of loading page
+class loadingScreen extends StatelessWidget{
+  @override
+  Widget build(BuildContext context){
+    return new SplashScreen(
+      seconds: 10,
+      navigateAfterSeconds: new Splash(),
+      title : new Text('Splash Screen',
+        style: new TextStyle(
+          fontWeight : FontWeight.bold,
+          fontSize:20.0
+        ),
+      ),
+      image: new Image.network('https://flutter.io/images/catalog-widget-placeholder.png'),
+      gradientBackground: new LinearGradient(colors: [Colors.cyan, Colors.blue], begin: Alignment.topLeft, end: Alignment.bottomRight ),
+      backgroundColor: Colors.white,
+      styleTextUnderTheLoader: new TextStyle(),
+      photoSize: 100.0,
+      onClick: ()=>print("Flutter"),
+      loaderColor: Colors.red,
+      );
+  }
+}
+
+class AfterSplash extends StatelessWidget{
+  @override
+  Widget build(BuildContext context){
+    return new Scaffold(
+      appBar: new AppBar(
+        title : new Text("welcome"),
+        automaticallyImplyLeading: false,
+      ),
+      body: new Center(
+        child:new Text("succeeded",
+          style: new TextStyle(
+            fontWeight:FontWeight.bold,
+            fontSize:30.0
+          )
+        ) ,
+      ),
+    );
+  }
+}
+
+
