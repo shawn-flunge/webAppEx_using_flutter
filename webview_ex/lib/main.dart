@@ -6,6 +6,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
 
+import 'package:webview_ex/FirstScreen.dart';
 void main() {
   runApp(MyApp());
 }
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home:Splash());// return MaterialApp(
+    return MaterialApp(home:FirstScreen());// return MaterialApp(
     //   title: 'Flutter Demo',
     //   theme: ThemeData(
     //     primarySwatch: Colors.blue, 
@@ -52,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
           javascriptMode: JavascriptMode.unrestricted,
         ),),
       
-
+      
       
         
       floatingActionButton: FloatingActionButton(
@@ -190,47 +191,23 @@ class SplashState extends State<Splash>{
       );      
     }
   }
-  // @override
-  // void initState(){
-  //   super.initState();
-  //   //checkFirstSeen();
-  //   new Timer(new Duration(milliseconds: 500),(){
-  //     checkFirstSeen();
-  //   });
-  // }
+  @override
+  void initState(){
+    super.initState();
+    //checkFirstSeen();
+    new Timer(new Duration(milliseconds: 500),(){
+      checkFirstSeen();
+    });
+  }
   @override
   Widget build(BuildContext context){
     
-    return new SplashScreen(
-      seconds: 14,
-      navigateAfterSeconds: checkFirstSeen(),
-      title : new Text('Splash Screen',
-        style: new TextStyle(
-          fontWeight : FontWeight.bold,
-          fontSize:20.0
-        ),
-      ),
-      image: new Image.network('https://flutter.io/images/catalog-widget-placeholder.png'),
-      gradientBackground: new LinearGradient(colors: [Colors.cyan, Colors.blue], begin: Alignment.topLeft, end: Alignment.bottomRight ),
-      backgroundColor: Colors.white,
-      styleTextUnderTheLoader: new TextStyle(),
-      photoSize: 100.0,
-      onClick: ()=>print("Flutter"),
-      loaderColor: Colors.red,
-      );
+    return Scaffold(body: Text("afaf"),);
   }
 
 }
 //end of Splash
 
-class CheckFirst extends StatefulWidget{
-  @override
-  CheckFirstState createState() => CheckFirstState();
-}
-
-class CheckFirstState extends State<CheckFirst>{
-
-}
 
 
 //start of loading page
